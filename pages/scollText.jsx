@@ -7,12 +7,16 @@ import styled from "styled-components";
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroCont = styled.section`
-    height: 10000px;
     width: 100%;
 
     .container {
-        height: 100%;
+        height: calc(100vh + 20000px);
         width: 100%;
+    }
+
+    .heading-container {
+        width: 100%;
+        height: 100vh;
         position: fixed;
         top: 0;
         left: 0;
@@ -21,7 +25,8 @@ const HeroCont = styled.section`
         justify-content: center;
     }
 
-    .heading {
+    .heading,
+    .hero__text {
         color: rgb(250, 250, 250);
         font-size: 36px;
         text-align: center;
@@ -29,26 +34,19 @@ const HeroCont = styled.section`
     }
 
     .text-container {
-        height: 1500px;
+        position: fixed;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+
         display: flex;
         justify-content: center;
         align-items: center;
-    }
 
-    .hero__text {
-        color: rgb(250, 250, 250);
-        font-size: 36px;
-        text-align: center;
-        width: 70%;
-        margin: 100px auto 900px;
-    }
-
-    .name {
-        font-size: 36px;
-        color: rgb(250, 250, 250);
-        position: fixed;
-        top: 50%;
-        left: 54%;
+        &--2 {
+            opacity: 0;
+            transform: translateY(30%);
+        }
     }
 
     .hero__span {
@@ -68,17 +66,19 @@ const Hero = () => {
 
     useLayoutEffect(() => {
         const ctx = gsap.context((self) => {
+            const container = self.selector(".container");
             const text1 = self.selector(".heading");
             const text1Other = self.selector(".heading--text");
             const name = self.selector(".heading--span");
             const textCont = self.selector(".heading-container");
             const text2 = self.selector(".hero__text--2");
             const textCont2 = self.selector(".text-container--2");
+
             const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: ".container",
+                    trigger: container,
                     start: "top top",
-                    end: "+=10000",
+                    end: "+=20000",
                     scrub: 1,
                 },
             });
@@ -87,48 +87,24 @@ const Hero = () => {
                 .to(text1Other, {
                     opacity: 0,
                 })
-                .to(name, {
-                    x: -500,
-                });
-            // tl.fromTo(
-            //     text1,
-            //     { opacity: 1 },
-            //     {
-            //         opacity: 0,
-            //         scrollTrigger: {
-            //             trigger: text1,
-            //             markers: true,
-            //             start: "center center",
-            //             end: "=+500",
-            //             scrub: true,
-            //         },
-            //     }
-            // );
-
-            // tl.fromTo(
-            //     text2,
-            //     {
-            //         scale: 3,
-            //         opacity: 0,
-            //     },
-            //     {
-            //         scale: 1,
-            //         opacity: 0.5,
-            //         y: () => ScrollTrigger.maxScroll(window) * 0.4,
-            //         scrollTrigger: {
-            //             trigger: textCont2,
-            //             start: "top center",
-            //             end: "bottom center",
-            //             markers: true,
-            //             scrub: true,
-            //         },
-            //     }
-            // );
+                .to(text1, {
+                    x: -230,
+                })
+                .fromTo(
+                    textCont2,
+                    { y: "30%", opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                    }
+                )
+                .to(textCont2, { y: "-30%", opacity: 0 });
         }, container);
     }, []);
+
     return (
-        <HeroCont>
-            <div className="container" ref={container}>
+        <HeroCont ref={container}>
+            <div className="container">
                 <div className="heading-container">
                     <h1 className={"heading"}>
                         <span className={"heading--text"}>this is some </span>
@@ -136,11 +112,12 @@ const Hero = () => {
                         <span className={"heading--text"}>.</span>
                     </h1>
                 </div>
-                {/* <div className="text-container text-container--2">
+                <div className="text-container text-container--2">
                     <h2 className={"hero__text hero__text--2"}>
-                        this is some <span className={"hero__span"}>text</span>.
+                        <span className={"hero__span"}>text</span> about
+                        something.
                     </h2>
-                </div> */}
+                </div>
             </div>
         </HeroCont>
     );
