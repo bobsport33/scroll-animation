@@ -10,7 +10,7 @@ const HeroCont = styled.section`
     width: 100%;
 
     .container {
-        height: calc(100vh + 20000px);
+        height: calc(100vh + 30000px);
         width: 100%;
     }
 
@@ -38,15 +38,11 @@ const HeroCont = styled.section`
         top: 0;
         height: 100vh;
         width: 100%;
-
         display: flex;
         justify-content: center;
         align-items: center;
-
-        &--2 {
-            opacity: 0;
-            transform: translateY(30%);
-        }
+        opacity: 0;
+        transform: translateY(30%);
     }
 
     .hero__span {
@@ -69,16 +65,14 @@ const Hero = () => {
             const container = self.selector(".container");
             const text1 = self.selector(".heading");
             const text1Other = self.selector(".heading--text");
-            const name = self.selector(".heading--span");
-            const textCont = self.selector(".heading-container");
-            const text2 = self.selector(".hero__text--2");
             const textCont2 = self.selector(".text-container--2");
+            const textCont3 = self.selector(".text-container--3");
 
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: container,
                     start: "top top",
-                    end: "+=20000",
+                    end: "+=30000",
                     scrub: 1,
                 },
             });
@@ -98,7 +92,19 @@ const Hero = () => {
                         opacity: 1,
                     }
                 )
-                .to(textCont2, { y: "-30%", opacity: 0 });
+                .to(textCont2, { y: "-30%", opacity: 0 })
+                .to(text1, {
+                    x: -110,
+                })
+                .fromTo(
+                    textCont3,
+                    { y: "30%", opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                    }
+                )
+                .to(textCont3, { y: "-30%", opacity: 0 });
         }, container);
     }, []);
 
@@ -116,6 +122,12 @@ const Hero = () => {
                     <h2 className={"hero__text hero__text--2"}>
                         <span className={"hero__span"}>text</span> about
                         something.
+                    </h2>
+                </div>
+                <div className="text-container text-container--3">
+                    <h2 className={"hero__text hero__text--3"}>
+                        some different<span className={"hero__span"}>text</span>{" "}
+                        about something.
                     </h2>
                 </div>
             </div>
