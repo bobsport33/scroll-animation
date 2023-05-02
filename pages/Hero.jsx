@@ -4,7 +4,7 @@ import styled from "styled-components";
 const HeroCont = styled.section`
     .background {
         width: 100%;
-        max-height: 900px;
+        height: 80vh;
         object-fit: cover;
     }
 `;
