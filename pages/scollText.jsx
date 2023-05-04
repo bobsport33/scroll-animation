@@ -31,6 +31,10 @@ const HeroCont = styled.section`
         font-size: 36px;
         text-align: center;
         width: 100%;
+
+        @media (max-width: 800px) {
+            font-size: 24px;
+        }
     }
 
     .text-container {
@@ -56,56 +60,64 @@ const HeroCont = styled.section`
 
 const Hero = () => {
     gsap.registerPlugin(ScrollTrigger);
+    let mm = gsap.matchMedia();
 
     const container = useRef(null);
     // const name = useRef(null)
 
     useLayoutEffect(() => {
-        const ctx = gsap.context((self) => {
-            const container = self.selector(".container");
-            const text1 = self.selector(".heading");
-            const text1Other = self.selector(".heading--text");
-            const textCont2 = self.selector(".text-container--2");
-            const textCont3 = self.selector(".text-container--3");
+        mm.add(
+            { isDesktop: "(min-width: 800px)", isMobile: "(max-width: 799px)" },
+            (context) => {
+                let { isDesktop, isMobile } = context.conditions;
 
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: container,
-                    start: "top top",
-                    end: "+=30000",
-                    scrub: 1,
-                },
-            });
+                const ctx = gsap.context((self) => {
+                    const container = self.selector(".container");
+                    const text1 = self.selector(".heading");
+                    const text1Other = self.selector(".heading--text");
+                    const textCont2 = self.selector(".text-container--2");
+                    const textCont3 = self.selector(".text-container--3");
 
-            tl.fromTo(text1, { scale: 3 }, { scale: 1 })
-                .to(text1Other, {
-                    opacity: 0,
-                })
-                .to(text1, {
-                    x: -230,
-                })
-                .fromTo(
-                    textCont2,
-                    { y: "30%", opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                    }
-                )
-                .to(textCont2, { y: "-30%", opacity: 0 })
-                .to(text1, {
-                    x: -110,
-                })
-                .fromTo(
-                    textCont3,
-                    { y: "30%", opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                    }
-                )
-                .to(textCont3, { y: "-30%", opacity: 0 });
-        }, container);
+                    const tl = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: container,
+                            start: "top top",
+                            end: "+=30000",
+                            scrub: 1,
+                        },
+                    });
+
+                    tl.fromTo(text1, { scale: 3 }, { scale: 1 })
+                        .to(text1Other, {
+                            opacity: 0,
+                        })
+                        .to(text1, {
+                            x: isDesktop ? -230 : -150,
+                        })
+                        .fromTo(
+                            textCont2,
+                            { y: "30%", opacity: 0 },
+                            {
+                                y: 0,
+                                opacity: 1,
+                            }
+                        )
+                        .to(textCont2, { y: "-30%", opacity: 0 })
+                        .to(text1, {
+                            x: isDesktop ? -110 : -73,
+                        })
+                        .fromTo(
+                            textCont3,
+                            { y: "30%", opacity: 0 },
+                            {
+                                y: 0,
+                                opacity: 1,
+                            }
+                        )
+                        .to(textCont3, { y: "-30%", opacity: 0 });
+                }, container);
+            }
+        );
     }, []);
 
     return (
