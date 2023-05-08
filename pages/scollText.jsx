@@ -35,6 +35,10 @@ const HeroCont = styled.section`
         @media (max-width: 800px) {
             font-size: 24px;
         }
+
+        @media (max-width: 500px) {
+            font-size: 20px;
+        }
     }
 
     .text-container {
@@ -67,7 +71,7 @@ const Hero = () => {
 
     useLayoutEffect(() => {
         mm.add(
-            { isDesktop: "(min-width: 800px)", isMobile: "(max-width: 799px)" },
+            { isDesktop: "(min-width: 800px)", isMobile: "(max-width: 500px)" },
             (context) => {
                 let { isDesktop, isMobile } = context.conditions;
 
@@ -87,12 +91,12 @@ const Hero = () => {
                         },
                     });
 
-                    tl.fromTo(text1, { scale: 3 }, { scale: 1 })
+                    tl.fromTo(text1, { scale: isMobile ? 2 : 3 }, { scale: 1 })
                         .to(text1Other, {
                             opacity: 0,
                         })
                         .to(text1, {
-                            x: isDesktop ? -230 : -150,
+                            x: isDesktop ? -230 : isMobile ? -125 : -150,
                         })
                         .fromTo(
                             textCont2,
@@ -104,7 +108,7 @@ const Hero = () => {
                         )
                         .to(textCont2, { y: "-30%", opacity: 0 })
                         .to(text1, {
-                            x: isDesktop ? -110 : -73,
+                            x: isDesktop ? -110 : isMobile ? -61 : -73,
                         })
                         .fromTo(
                             textCont3,
